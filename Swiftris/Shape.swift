@@ -84,7 +84,7 @@ class Shape: Hashable, CustomStringConvertible {
     // Hashable
     var hashValue:Int {
         // #4
-        return reduce(blocks, 0) { $0.hashValue ^ $1.hashValue }
+        return blocks.reduce(0) { $0.hashValue ^ $1.hashValue }
     }
     
     // Printable
@@ -119,7 +119,8 @@ class Shape: Hashable, CustomStringConvertible {
     final func rotateBlocks(orientation: Orientation) {
         if let blockRowColumnTranslation:Array<(columnDiff: Int, rowDiff: Int)> = blockRowColumnPositions[orientation] {
             // #1
-            for (idx, diff) in enumerate(blockRowColumnTranslation) {
+            for (var idx = 0; idx < blockRowColumnTranslation.count; idx++) {
+                let diff = blockRowColumnTranslation[idx]
                 blocks[idx].column = column + diff.columnDiff
                 blocks[idx].row = row + diff.rowDiff
             }
@@ -140,6 +141,18 @@ class Shape: Hashable, CustomStringConvertible {
     
     final func lowerShapeByOneRow() {
         shiftBy(0, rows:1)
+    }
+    
+    final func raiseShapeByOneRow() {
+        shiftBy(0, rows:-1)
+    }
+    
+    final func shiftRightByOneColumn() {
+        shiftBy(1, rows:0)
+    }
+    
+    final func shiftLeftByOneColumn() {
+        shiftBy(-1, rows:0)
     }
     
     // #2

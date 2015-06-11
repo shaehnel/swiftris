@@ -53,7 +53,7 @@ class GameScene: SKScene {
         if lastTick == nil {
             return
         }
-        var timePassed = lastTick!.timeIntervalSinceNow * -1000.0
+        let timePassed = lastTick!.timeIntervalSinceNow * -1000.0
         if timePassed > tickLengthMillis {
             lastTick = NSDate()
             tick?()
@@ -74,7 +74,7 @@ class GameScene: SKScene {
     }
     
     func addPreviewShapeToScene(shape:Shape, completion:() -> ()) {
-        for (_, block) in shape.blocks {
+        for block in shape.blocks {
             // #4
             var texture = textureCache[block.spriteName]
             if texture == nil {
@@ -100,24 +100,24 @@ class GameScene: SKScene {
     }
     
     func movePreviewShape(shape:Shape, completion:() -> ()) {
-        for (idx, block) in enumerate(shape.blocks) {
+        for block in shape.blocks {
             let sprite = block.sprite!
             let moveTo = pointForColumn(block.column, row:block.row)
             let moveToAction:SKAction = SKAction.moveTo(moveTo, duration: 0.2)
             moveToAction.timingMode = .EaseOut
             sprite.runAction(
-                SKAction.group([moveToAction, SKAction.fadeAlphaTo(1.0, duration: 0.2)]), completion:nil)
+                SKAction.group([moveToAction, SKAction.fadeAlphaTo(1.0, duration: 0.2)]))
         }
         runAction(SKAction.waitForDuration(0.2), completion: completion)
     }
     
     func redrawShape(shape:Shape, completion:() -> ()) {
-        for (idx, block) in enumerate(shape.blocks) {
+        for block in shape.blocks {
             let sprite = block.sprite!
             let moveTo = pointForColumn(block.column, row:block.row)
             let moveToAction:SKAction = SKAction.moveTo(moveTo, duration: 0.05)
             moveToAction.timingMode = .EaseOut
-            sprite.runAction(moveToAction, completion: nil)
+            sprite.runAction(moveToAction)
         }
         runAction(SKAction.waitForDuration(0.05), completion: completion)
     }
